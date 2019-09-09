@@ -1,0 +1,8 @@
+*.o
+*.mod
+core
+cudaTensorCoreGemm
+simpleCUBLAS
+half
+notensor
+*.swp
