@@ -8,17 +8,17 @@ Please see individual examples for their licensing requirements.
 Examples
 --------
 
-* (cudaTensorCoreGemm)[cudaTensorCoreGemm/readme.txt] - Implements a GEMM operation using WMMA instructions
-* (simpleCUBLASEx)[simpleCUBLASEx/readme.txt] - Demonstrates an SGEMM using Tensor Cores via the cublasGemmEx
+* [cudaTensorCoreGemm](cudaTensorCoreGemm/readme.txt) - Implements a GEMM operation using WMMA instructions
+* [simpleCUBLASEx](simpleCUBLASEx/readme.txt) - Demonstrates an SGEMM using Tensor Cores via the cublasGemmEx
   API
-* (simpleCUBLASHgemm)[simpleCUBLASHgemm/readme.txt] - Demonstrates calling HGEMM directly from cuBLAS
-* (simpleCUBLASSgemm)[simpleCUBLASSgemm] - Demonstrates using Tensor Cores implicitly from SGEMM
-* (CUTLASS WMMA GEMM)[cutlass/examples/05_wmma_gemm] - Using WMMA instructions from the CUTLASS
+* [simpleCUBLASHgemm](simpleCUBLASHgemm/readme.txt) - Demonstrates calling HGEMM directly from cuBLAS
+* [simpleCUBLASSgemm](simpleCUBLASSgemm) - Demonstrates using Tensor Cores implicitly from SGEMM
+* [CUTLASS WMMA GEMM](cutlass/examples/05_wmma_gemm) - Using WMMA instructions from the CUTLASS
   framework.
-* (pictc)[pictc/README.md] - Implements a simple Particle-In-Cell pusher using Tensor Cores
-* (DCGAN)[apex/tree/master/examples/dcgan] - Illustrates using Automatic Mixed Precision
+* [pictc](pictc/README.md) - Implements a simple Particle-In-Cell pusher using Tensor Cores
+* [DCGAN](apex/tree/master/examples/dcgan) - Illustrates using Automatic Mixed Precision
   (AMP) within PyTorch using the DCGAN network.
-* (ImageNet)[apex/tree/master/examples/imagenet] - Illustrates using Automatic Mixed
+* [ImageNet](apex/tree/master/examples/imagenet) - Illustrates using Automatic Mixed
   Precision (AMP) with imagenet.
 
 Instructions
