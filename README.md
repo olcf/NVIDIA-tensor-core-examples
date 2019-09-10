@@ -15,7 +15,7 @@ Examples
 * [simpleCUBLASSgemm](simpleCUBLASSgemm) - Demonstrates using Tensor Cores implicitly from SGEMM
 * [CUTLASS WMMA GEMM](https://github.com/NVIDIA/cutlass/tree/master/examples/05_wmma_gemm) - Using WMMA instructions from the CUTLASS
   framework.
-* [pictc](pictc/README.md) - Implements a simple Particle-In-Cell pusher using Tensor Cores
+* [pictc](https://github.com/vishalmehta1991/pictc/README.md) - Implements a simple Particle-In-Cell pusher using Tensor Cores
 * [DCGAN](https://github.com/NVIDIA/apex/tree/master/examples/dcgan) - Illustrates using Automatic Mixed Precision
   (AMP) within PyTorch using the DCGAN network.
 * [ImageNet](https://github.com/NVIDIA/apex/tree/master/examples/imagenet) - Illustrates using Automatic Mixed

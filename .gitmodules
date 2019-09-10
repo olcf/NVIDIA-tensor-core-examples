@@ -4,3 +4,6 @@
 [submodule "apex"]
 	path = apex
 	url = git@github.com:NVIDIA/apex.git
+[submodule "pictc"]
+	path = pictc
+	url = https://github.com/vishalmehta1991/pictc
