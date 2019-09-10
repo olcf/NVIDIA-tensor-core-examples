@@ -11,7 +11,7 @@ Examples
 * [cudaTensorCoreGemm](cudaTensorCoreGemm/readme.txt) - Implements a GEMM operation using WMMA instructions
 * [simpleCUBLASEx](simpleCUBLASEx/readme.txt) - Demonstrates an SGEMM using Tensor Cores via the cublasGemmEx
   API
-* [simpleCUBLASHgemm](simpleCUBLASHgemm/readme.txt) - Demonstrates calling HGEMM directly from cuBLAS **(NOT YET CREATED)**
+* [simpleCUBLASHgemm](simpleCUBLASHgemm/readme.txt) - Demonstrates calling HGEMM directly from cuBLAS
 * [simpleCUBLASSgemm](simpleCUBLASSgemm) - Demonstrates using Tensor Cores implicitly from SGEMM
 * [CUTLASS WMMA GEMM](https://github.com/NVIDIA/cutlass/tree/master/examples/05_wmma_gemm) - Using WMMA instructions from the CUTLASS
   framework.
