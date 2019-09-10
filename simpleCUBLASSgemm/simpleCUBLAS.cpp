@@ -50,7 +50,7 @@
 #include <helper_cuda.h>
 
 /* Matrix size */
-#define N (275)
+#define N (1024)
 
 /* Host implementation of a simple version of sgemm */
 static void simple_sgemm(int n, float alpha, const float *A, const float *B,
