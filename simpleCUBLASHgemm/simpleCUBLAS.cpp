@@ -50,21 +50,21 @@
 #include <helper_cuda.h>
 
 /* Matrix size */
-#define N (275)
+#define N (512)
 
-/* Host implementation of a simple version of sgemm */
-static void simple_sgemm(int n, float alpha, const float *A, const float *B,
-                         float beta, float *C) {
+/* Host implementation of a simple version of hgemm */
+static void simple_hgemm(int n, half alpha, const half *A, const half *B,
+                         half beta, half *C) {
   int i;
   int j;
   int k;
 
   for (i = 0; i < n; ++i) {
     for (j = 0; j < n; ++j) {
-      float prod = 0;
+      half prod = 0.0f;
 
       for (k = 0; k < n; ++k) {
-        prod += A[k * n + i] * B[j * n + k];
+        prod = prod + A[k * n + i] * B[j * n + k];
       }
 
       C[j * n + i] = alpha * prod + beta * C[j * n + i];
@@ -75,20 +75,20 @@ static void simple_sgemm(int n, float alpha, const float *A, const float *B,
 /* Main */
 int main(int argc, char **argv) {
   cublasStatus_t status;
-  float *h_A;
-  float *h_B;
-  float *h_C;
-  float *h_C_ref;
-  float *d_A = 0;
-  float *d_B = 0;
-  float *d_C = 0;
-  float alpha = 1.0f;
-  float beta = 0.0f;
+  half *h_A;
+  half *h_B;
+  half *h_C;
+  half *h_C_ref;
+  half *d_A = 0;
+  half *d_B = 0;
+  half *d_C = 0;
+  half alpha = 1.0f;
+  half beta = 0.0f;
   int n2 = N * N;
   int i;
-  float error_norm;
-  float ref_norm;
-  float diff;
+  half error_norm;
+  half ref_norm;
+  half diff;
   cublasHandle_t handle;
 
   int dev = findCudaDevice(argc, (const char **)argv);
@@ -108,21 +108,21 @@ int main(int argc, char **argv) {
   }
 
   /* Allocate host memory for the matrices */
-  h_A = reinterpret_cast<float *>(malloc(n2 * sizeof(h_A[0])));
+  h_A = reinterpret_cast<half *>(malloc(n2 * sizeof(h_A[0])));
 
   if (h_A == 0) {
     fprintf(stderr, "!!!! host memory allocation error (A)\n");
     return EXIT_FAILURE;
   }
 
-  h_B = reinterpret_cast<float *>(malloc(n2 * sizeof(h_B[0])));
+  h_B = reinterpret_cast<half *>(malloc(n2 * sizeof(h_B[0])));
 
   if (h_B == 0) {
     fprintf(stderr, "!!!! host memory allocation error (B)\n");
     return EXIT_FAILURE;
   }
 
-  h_C = reinterpret_cast<float *>(malloc(n2 * sizeof(h_C[0])));
+  h_C = reinterpret_cast<half *>(malloc(n2 * sizeof(h_C[0])));
 
   if (h_C == 0) {
     fprintf(stderr, "!!!! host memory allocation error (C)\n");
@@ -131,9 +131,9 @@ int main(int argc, char **argv) {
 
   /* Fill the matrices with test data */
   for (i = 0; i < n2; i++) {
-    h_A[i] = rand() / static_cast<float>(RAND_MAX);
-    h_B[i] = rand() / static_cast<float>(RAND_MAX);
-    h_C[i] = rand() / static_cast<float>(RAND_MAX);
+    h_A[i] = static_cast<half>(rand() / static_cast<float>(RAND_MAX));
+    h_B[i] = static_cast<half>(rand() / static_cast<float>(RAND_MAX));
+    h_C[i] = static_cast<half>(rand() / static_cast<float>(RAND_MAX));
   }
 
   /* Allocate device memory for the matrices */
@@ -186,11 +186,11 @@ int main(int argc, char **argv) {
   }
 
   /* Performs operation using plain C code */
-  simple_sgemm(N, alpha, h_A, h_B, beta, h_C);
+  simple_hgemm(N, alpha, h_A, h_B, beta, h_C);
   h_C_ref = h_C;
 
   /* Performs operation using cublas */
-  status = cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha, d_A,
+  status = cublasHgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N, N, N, N, &alpha, d_A,
                        N, d_B, N, &beta, d_C, N);
 
   if (status != CUBLAS_STATUS_SUCCESS) {
@@ -199,7 +199,7 @@ int main(int argc, char **argv) {
   }
 
   /* Allocate host memory for reading back the result from device memory */
-  h_C = reinterpret_cast<float *>(malloc(n2 * sizeof(h_C[0])));
+  h_C = reinterpret_cast<half *>(malloc(n2 * sizeof(h_C[0])));
 
   if (h_C == 0) {
     fprintf(stderr, "!!!! host memory allocation error (C)\n");
@@ -215,17 +215,17 @@ int main(int argc, char **argv) {
   }
 
   /* Check result against reference */
-  error_norm = 0;
-  ref_norm = 0;
+  error_norm = 0.0f;
+  ref_norm = 0.0f;
 
   for (i = 0; i < n2; ++i) {
     diff = h_C_ref[i] - h_C[i];
-    error_norm += diff * diff;
-    ref_norm += h_C_ref[i] * h_C_ref[i];
+    error_norm = error_norm + diff * diff;
+    ref_norm = ref_norm + h_C_ref[i] * h_C_ref[i];
   }
 
-  error_norm = static_cast<float>(sqrt(static_cast<double>(error_norm)));
-  ref_norm = static_cast<float>(sqrt(static_cast<double>(ref_norm)));
+  error_norm = static_cast<half>(sqrt(static_cast<double>(error_norm)));
+  ref_norm = static_cast<half>(sqrt(static_cast<double>(ref_norm)));
 
   if (fabs(ref_norm) < 1e-7) {
     fprintf(stderr, "!!!! reference norm is 0\n");
